@@ -2,7 +2,10 @@ module wb_lvl2_calendar
 
 go 1.23.5
 
-require github.com/gin-gonic/gin v1.11.0
+require (
+	github.com/gin-gonic/gin v1.11.0
+	github.com/joho/godotenv v1.5.1
+)
 
 require (
 	github.com/bytedance/sonic v1.14.0 // indirect

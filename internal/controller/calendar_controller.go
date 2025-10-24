@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"errors"
 	"net/http"
 	"wb_lvl2_calendar/internal/model"
 	"wb_lvl2_calendar/internal/service"
@@ -48,6 +49,12 @@ func (cc *CalendarController) UpdateEvent(c *gin.Context) {
 	}
 	err = cc.serv.UpdateEvent(event)
 	if err != nil {
+		if errors.Is(err, errors.New("event not found")) {
+			c.JSON(http.StatusServiceUnavailable, gin.H{
+				"error": err.Error(),
+			})
+			return
+		}
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
 		})
@@ -62,6 +69,12 @@ func (cc *CalendarController) DeleteEvent(c *gin.Context) {
 	id := c.Param("id")
 	err := cc.serv.DeleteEvent(id)
 	if err != nil {
+		if errors.Is(err, errors.New("event not found")) {
+			c.JSON(http.StatusServiceUnavailable, gin.H{
+				"error": err.Error(),
+			})
+			return
+		}
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
 		})
